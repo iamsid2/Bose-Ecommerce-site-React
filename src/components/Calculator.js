@@ -2,8 +2,8 @@ import React, { Component } from "react";
 
 class Calc extends Component {
 
-        constructor(){
-           super();
+        constructor(props){
+           super(props);
            this.state = {
              newProject:{}
            }
@@ -13,27 +13,53 @@ class Calc extends Component {
     }
 
             handleSubmit(e){
-        if(this.refs.title.value === ''){
-        alert('No. of Unit is required');
-        } else {
-        this.setState({newProject:{
-          title: this.refs.title.value,
-          category: this.refs.category.value
-        }}, function(){
-          this.props.addProject(this.state.newProject);
-        });
-        }
+              if(this.refs.title.value === ''){
+              alert('No. of Unit is required');
+              } else {
+              this.setState({newProject:{
+                title: this.refs.title.value,
+                category: this.refs.category.value
+              }}, function(){
+                this.props.addProject(this.state.newProject);
+              });
+              }
         e.preventDefault();
         }
+      importFees()
+      {
+          var c = this.refs.category.value
+        if(c =="India")
+          return 50.00;
+        else if(c=="U.K")
+           return 30.00;
+        else {
+          return 0.00;
+        }
+      }
+
+      discountFees()
+      {
+            var g = this.refs.category.value
+        if(g=="India")
+          return 100.00;
+        else if(g=="U.K")
+           return 75.00;
+        else {
+          return 20.00;
+        }
+      }
+      totalCost()
+      {
+          var a = this.discountFees.value
+          var b = this.importFees.value
+        return 1000 + a + b;
+      }
 
 
 	render() {
       let categoryOptions = this.props.categories.map(category => {
         return <option key={category} values="category">{category}</option>
       });
-      let categoryValue = (a) => {
-        return a.state.category;
-      }
 
 		return (
       <div className="container">
@@ -63,22 +89,23 @@ class Calc extends Component {
           </li>
             <li className="nav-item active">
             <strong>Import fees from U.S : </strong>
-            <text><b>{categoryValue}</b></text>
+            <text><b>{this.importFees}</b></text>
             </li>
             <li className="nav-item active">
             <strong>Discount : </strong>
-            <text></text>
+            <text>{this.discountFees}</text>
             </li>
             <li className="nav-item active">
             <strong>NET COST $: </strong>
-            <text></text>
+            <text>{this.totalCost}</text>
             </li>
             </ul>
             <br/>
           <input type="submit" className= "btn btn-info" value="BUY" />
           <input type="submit" className= "btn btn-danger" value="CLEAR" />
           <br />
-        </form>
+          </form>
+
 
       </div>
       )
